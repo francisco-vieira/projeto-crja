@@ -1,8 +1,17 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {TarefaPageModule} from "./pages/tarefa-page/tarefa-page.module";
+import {HttpClientModule} from "@angular/common/http";
+
+import localePt from '@angular/common/locales/pt';
+import {registerLocaleData} from "@angular/common";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {IConfig, provideNgxMask} from "ngx-mask";
+const maskConfig: Partial<IConfig> = {validation: false}
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -10,9 +19,16 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    TarefaPageModule,
   ],
-  providers: [],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'pt-br'},
+    provideNgxMask(maskConfig)
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
