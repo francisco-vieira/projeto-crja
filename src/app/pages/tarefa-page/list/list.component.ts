@@ -25,13 +25,7 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tarefas = [
-      {id: 1, nomeTarefa: "Fulano", custo: 15.59, dataLimite: new Date(), orderApresentacao: 2},
-      {id: 2, nomeTarefa: "Siclano", custo: 459.59, dataLimite: new Date(), orderApresentacao: 4},
-      {id: 3, nomeTarefa: "Beltrano", custo: 1250.95, dataLimite: new Date(), orderApresentacao: 1},
-      {id: 4, nomeTarefa: "Oscambal", custo: 1597.59, dataLimite: new Date(), orderApresentacao: 3},
-    ]
-    this.tarefas.sort((a, b) => a.orderApresentacao - b.orderApresentacao);
+    this.findAll()
   }
 
   confirmar(tarefa: Tarefa) {
@@ -39,11 +33,15 @@ export class ListComponent implements OnInit {
     this.confirmationService.confirm({
 
       accept: () => {
-        const index = this.tarefas.indexOf(tarefa)
-        if (index !== -1) {
-          this.tarefas.splice(index, 1)
-          this.showMessage('info', 'Removido', `Tarefa ${tarefa.nomeTarefa} removida com sucesso`);
-        }
+        this.service.delete(tarefa.id).subscribe({
+          next: value => {
+            this.showMessage('info',
+              'Removido',
+              `Tarefa ${tarefa.nomeTarefa} removida com sucesso`)
+            this.findAll()
+          },
+          error: console.error
+        })
       },
 
       reject: (type: ConfirmEventType) => {
@@ -63,27 +61,55 @@ export class ListComponent implements OnInit {
 
   novaTarefa(visible: boolean) {
     this.visible = visible;
-    this.tarefa = {} as Tarefa;
   }
-
 
   private showMessage(serverity: string, summary: string, detail: string,) {
     this.messageService.add({severity: serverity, summary: summary, detail: detail});
   }
 
-
   salvar(f: NgForm) {
+    let servirity = ''
+    let summary = ''
+    let detail = ''
     if (f.valid) {
 
-      if (!this.tarefa.id) {
-        this.tarefa.id = this.tarefas.length + 1
-        this.tarefas.push(this.tarefa)
-      }
-
-      this.showMessage('info', 'Gravado', `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`);
+      this.service.post(this.tarefa).subscribe({
+        next: value => {
+         servirity = 'info'
+         summary = 'Gravado'
+         detail = `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`
+          this.showMessage(servirity, summary, detail);
+          f.reset()
+        },
+        error: err => {
+          servirity = 'error'
+          summary = 'Falha ao salvar'
+          detail = `Falha ao salvar a tarefa ${this.tarefa.nomeTarefa} `
+          this.showMessage(servirity, summary, detail);
+        }
+      })
+      this.findAll()
       this.visible = false
       this.tarefa = {} as Tarefa;
     }
   }
+
+  private findAll() {
+    this.service.getAll().subscribe({
+      next: value => {
+        this.tarefas = value
+        this.tarefas.sort((a, b) => a.orderApresentacao - b.orderApresentacao);
+      },
+      error: console.error
+    })
+  }
+
+  private findById(id: number) {
+    this.service.getId(id).subscribe({
+      next: value => this.tarefa = value,
+      error: console.error
+    })
+  }
+
 }
 
