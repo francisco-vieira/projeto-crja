@@ -72,13 +72,13 @@ export class ListComponent implements OnInit {
     let summary = ''
     let detail = ''
     if (f.valid) {
-
       this.service.post(this.tarefa).subscribe({
         next: value => {
-         servirity = 'info'
-         summary = 'Gravado'
-         detail = `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`
+          servirity = 'info'
+          summary = 'Gravado'
+          detail = `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`
           this.showMessage(servirity, summary, detail);
+          this.findAll()
           f.reset()
         },
         error: err => {
@@ -88,7 +88,6 @@ export class ListComponent implements OnInit {
           this.showMessage(servirity, summary, detail);
         }
       })
-      this.findAll()
       this.visible = false
       this.tarefa = {} as Tarefa;
     }
