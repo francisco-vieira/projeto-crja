@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TarefaService} from "../../../service/tarefa.service";
 import {Tarefa} from "../../../model/tarefa";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
-import {Form, NgForm} from "@angular/forms";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-list',
