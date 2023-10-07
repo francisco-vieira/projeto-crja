@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Tarefa} from "../model/tarefa";
-import {env} from "../../var/env";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TarefaService {
 
-  private host = env.host.concat('tarefas')
+  private host = environment.host.concat('tarefas')
 
   constructor(private http: HttpClient) {
   }

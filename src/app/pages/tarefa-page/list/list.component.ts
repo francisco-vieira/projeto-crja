@@ -86,6 +86,7 @@ export class ListComponent implements OnInit {
           summary = 'Falha ao salvar'
           detail = `Falha ao salvar a tarefa ${this.tarefa.nomeTarefa} `
           this.showMessage(servirity, summary, detail);
+          this.findAll()
         }
       })
       this.visible = false
