@@ -14,7 +14,6 @@ export class ListComponent implements OnInit {
 
   tarefas!: Tarefa[]
   tarefa = {} as Tarefa
-  title = "Nova tarefa"
   visible: boolean = false;
   index = 0
 
@@ -29,9 +28,7 @@ export class ListComponent implements OnInit {
   }
 
   confirmar(tarefa: Tarefa) {
-    this.tarefa = tarefa;
     this.confirmationService.confirm({
-
       accept: () => {
         this.service.delete(tarefa.id).subscribe({
           next: value => {
@@ -60,7 +57,8 @@ export class ListComponent implements OnInit {
   }
 
   novaTarefa(visible: boolean) {
-    this.visible = visible;
+    this.visible = visible
+    this.tarefa = {} as Tarefa
   }
 
   private showMessage(serverity: string, summary: string, detail: string,) {
@@ -89,8 +87,7 @@ export class ListComponent implements OnInit {
           this.findAll()
         }
       })
-      this.visible = false
-      this.tarefa = {} as Tarefa;
+      this.novaTarefa(false)
     }
   }
 
