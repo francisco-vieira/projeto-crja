@@ -3,6 +3,7 @@ import {TarefaService} from "../../../service/tarefa.service";
 import {Tarefa} from "../../../model/tarefa";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
 import {NgForm} from "@angular/forms";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-list',
@@ -30,7 +31,6 @@ export class ListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.moveRow()
   }
 
   confirmar(tarefa: Tarefa) {
@@ -86,6 +86,7 @@ export class ListComponent implements OnInit, AfterViewInit {
       },
       error: err => {
         this.showMessage('error', 'Falha ao salvar', `${err.error.errors[0]}`);
+        this.findAll()
       }
     })
   }
@@ -111,11 +112,10 @@ export class ListComponent implements OnInit, AfterViewInit {
     })
   }
 
-  private moveRow() {
-    let index = this.table?.rows!
-
+  moverLinha(event: CdkDragDrop<any>) {
+    moveItemInArray(this.tarefas, event.previousIndex, event.currentIndex)
   }
 
-
+  protected readonly ondragend = ondragend;
 }
 

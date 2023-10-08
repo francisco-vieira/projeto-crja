@@ -15,6 +15,7 @@ import {CalendarModule} from "primeng/calendar";
 import {TooltipModule} from "primeng/tooltip";
 import { InputMaskModule } from 'primeng/inputmask';
 import {NgxMaskDirective, NgxMaskPipe} from "ngx-mask";
+import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from "@angular/cdk/drag-drop";
 
 // const routers= [
 //   {path: '', component: ListComponent},
@@ -25,23 +26,27 @@ import {NgxMaskDirective, NgxMaskPipe} from "ngx-mask";
     EditComponent,
     ListComponent
   ],
-  imports: [
-    CommonModule,
-    RouterLink,
-    TableModule,
-    ButtonModule,
-    DialogModule,
-    ToastModule,
-    ConfirmDialogModule,
-    DividerModule,
-    FormsModule,
-    InputTextModule,
-    CalendarModule,
-    TooltipModule,
-    InputMaskModule,
-    NgxMaskDirective,
-    NgxMaskPipe
-  ],
+    imports: [
+        CommonModule,
+        RouterLink,
+        TableModule,
+        ButtonModule,
+        DialogModule,
+        ToastModule,
+        ConfirmDialogModule,
+        DividerModule,
+        FormsModule,
+        InputTextModule,
+        CalendarModule,
+        TooltipModule,
+        InputMaskModule,
+        NgxMaskDirective,
+        NgxMaskPipe,
+        CdkDropList,
+        CdkDrag,
+        CdkDragHandle,
+        CdkDragPreview
+    ],
   exports: [
     EditComponent,
     ListComponent

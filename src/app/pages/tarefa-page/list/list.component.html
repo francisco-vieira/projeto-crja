@@ -1,11 +1,4 @@
 <div class="container">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js" integrity="sha256-d3rtug+Hg1GZPB7Y/yTcRixO/wlI78+2m08tosoRn7A=" crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      // Initialise the table
-      $("#table-1").tableDnD();
-    });
-  </script>
   <div class="col-12 mt-3">
 
     <nav aria-label="breadcrumb">
@@ -16,7 +9,11 @@
       <button class="btn btn-primary mb-2" type="button" (click)="novaTarefa(true)">Nova tarefa</button>
     </div>
 
-    <table class="table table-hover table-bordered" aria-describedby="Tarefas" id="tableTarefa" #tableTarefa *ngIf="tarefas.length">
+    <table class="table table-hover table-bordered"
+           aria-describedby="Tarefas"
+           id="tableTarefa"
+           #tableTarefa
+           *ngIf="tarefas.length">
       <thead>
       <tr>
         <th scope="col">ID</th>
@@ -25,13 +22,13 @@
         <th scope="col">Data limite</th>
       </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let t of tarefas" [class]=" t.custo> 1000 ? 'table-primary': '' ">
-        <td>{{ t.id }}</td>
-        <td>{{ t.nomeTarefa }}</td>
+      <tbody cdkDropList (cdkDropListDropped)="moverLinha($event)">
+      <tr *ngFor="let t of tarefas" [class]=" t.custo> 1000 ? 'table-primary': '' " cdkDrag cdkDragLockAxis="y">
+        <td cdkDragHandle>{{ t.id }}</td>
+        <td>{{ t.nomeTarefa | titlecase }}</td>
         <td>{{ t.custo | currency: 'BRL' }}</td>
         <td>{{ t.dataLimite | date: 'dd/MM/YYYY' }}</td>
-        <td class="">
+        <td>
           <div class="row justify-content-center">
 
             <button class="btn btn-primary bi-pencil me-2 col-2"
@@ -44,13 +41,15 @@
             </button>
           </div>
         </td>
+        <div *cdkDragPreview  class="container">
+          {{ t.nomeTarefa | titlecase }}
+        </div>
       </tr>
       </tbody>
     </table>
 
   </div>
-  <p-dialog header="Nova tarefa" [(visible)]="visible" position="center" [style]="{ width: '40vw' }"
-            styleClass=" pt-4">
+  <p-dialog header="Nova tarefa" [(visible)]="visible" position="center" [style]="{ width: '40vw' }" styleClass=" pt-4">
     <div class="grid justify-content-center">
       <div class="md:col-6 sm:col-12">
         <form class=" flex align-items-center" #f="ngForm" (ngSubmit)="salvar(f)">
@@ -75,7 +74,8 @@
               pInputText
               prefix="R$ "
               mask="separator.2"
-              thousandSeparator=","
+              thousandSeparator="."
+              the
               placeholder="0,00"
               [(ngModel)]="tarefa.custo"
               name="custo"
