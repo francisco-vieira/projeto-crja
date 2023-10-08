@@ -1,5 +1,11 @@
 <div class="container">
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js" integrity="sha256-d3rtug+Hg1GZPB7Y/yTcRixO/wlI78+2m08tosoRn7A=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Initialise the table
+      $("#table-1").tableDnD();
+    });
+  </script>
   <div class="col-12 mt-3">
 
     <nav aria-label="breadcrumb">
@@ -10,7 +16,7 @@
       <button class="btn btn-primary mb-2" type="button" (click)="novaTarefa(true)">Nova tarefa</button>
     </div>
 
-    <table class="table table-hover table-bordered" aria-describedby="Tarefas" #tableTarefa *ngIf="tarefas.length">
+    <table class="table table-hover table-bordered" aria-describedby="Tarefas" id="tableTarefa" #tableTarefa *ngIf="tarefas.length">
       <thead>
       <tr>
         <th scope="col">ID</th>
@@ -59,8 +65,7 @@
                     name="nomeTarefa"
                     [(ngModel)]="tarefa.nomeTarefa"
                     class="col-12"
-                    maxlength="50"
-                    required/>
+                    maxlength="50"/>
                   <label>Descrição</label>
             </span>
           </div>
@@ -70,12 +75,11 @@
               pInputText
               prefix="R$ "
               mask="separator.2"
-              thousandSeparator="."
+              thousandSeparator=","
               placeholder="0,00"
               [(ngModel)]="tarefa.custo"
               name="custo"
-              class="col-12"
-              required/>
+              class="col-12"/>
             <label>Custo</label>
           </span>
             <span class="p-float-label mt-4 sm:col-6 md:col-6 col-6">

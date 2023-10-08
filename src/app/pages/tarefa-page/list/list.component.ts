@@ -16,12 +16,12 @@ export class ListComponent implements OnInit, AfterViewInit {
   tarefa = {} as Tarefa
   visible: boolean = false;
   @ViewChild('tableTarefa')
-  private table?:HTMLTableElement
+  private table?: HTMLTableElement
 
   constructor(
-              private service: TarefaService,
-              private confirmationService: ConfirmationService,
-              private messageService: MessageService) {
+    private service: TarefaService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService) {
     this.tarefas = []
   }
 
@@ -76,29 +76,18 @@ export class ListComponent implements OnInit, AfterViewInit {
   }
 
   salvar(f: NgForm) {
-    let servirity = ''
-    let summary = ''
-    let detail = ''
-    if (f.valid) {
-      this.service.post(this.tarefa).subscribe({
-        next: value => { this.tarefa = value
-          servirity = 'info'
-          summary = 'Sucesso'
-          detail = `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`
-          this.showMessage(servirity, summary, detail);
-          this.findAll()
-          f.reset()
-        },
-        error: err => {
-          servirity = 'error'
-          summary = 'Falha ao salvar'
-          detail = `${err.error.message}`
-          this.showMessage(servirity, summary, detail);
-          this.findAll()
-        }
-      })
-      this.novaTarefa(false)
-    }
+    this.service.post(this.tarefa).subscribe({
+      next: value => {
+        this.tarefa = value
+        this.showMessage('info', 'Sucesso', `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`);
+        f.reset()
+        this.findAll()
+        this.novaTarefa(false)
+      },
+      error: err => {
+        this.showMessage('error', 'Falha ao salvar', `${err.error.errors[0]}`);
+      }
+    })
   }
 
   private findAll() {
@@ -125,44 +114,7 @@ export class ListComponent implements OnInit, AfterViewInit {
   private moveRow() {
     let index = this.table?.rows!
 
-
-    // let numberOfRows = body.childNodes.length
-    //
-    // let newRow = document.createElement('tr')
-    // body.appendChild(newRow)
-    //
-    // body.removeChild(body.childNodes[0])
-
-    /*
-    let helperModified = function(e, tr) {
-        let $originals = tr.children();
-        let $helper = tr.clone();
-        $helper.children().each(function(index) {
-          $(this).width($originals.eq(index).width())
-        });
-        return $helper;
-      },
-      updateIndex = function(e, ui) {
-        $('td.index', ui.item.parent()).each(function (i) {
-          $(this).html(i+1);
-        });
-        $('input[type=text]', ui.item.parent()).each(function (i) {
-          $(this).val(i + 1);
-        });
-      };
-
-      $("tbody").sortable({
-        distance: 5,
-        delay: 100,
-        opacity: 0.6,
-        cursor: 'move',
-        update: function() {}
-      });
-  */
-
-
   }
-
 
 
 }
