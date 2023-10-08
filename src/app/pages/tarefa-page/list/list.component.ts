@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {TarefaService} from "../../../service/tarefa.service";
 import {Tarefa} from "../../../model/tarefa";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
@@ -10,14 +10,16 @@ import {NgForm} from "@angular/forms";
   styleUrls: ['./list.component.css'],
   providers: [ConfirmationService, MessageService]
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, AfterViewInit {
 
   tarefas!: Tarefa[]
   tarefa = {} as Tarefa
   visible: boolean = false;
-  index = 0
+  @ViewChild('tableTarefa')
+  private table?:HTMLTableElement
 
-  constructor(private service: TarefaService,
+  constructor(
+              private service: TarefaService,
               private confirmationService: ConfirmationService,
               private messageService: MessageService) {
     this.tarefas = []
@@ -25,6 +27,10 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.findAll()
+  }
+
+  ngAfterViewInit(): void {
+    this.moveRow()
   }
 
   confirmar(tarefa: Tarefa) {
@@ -37,7 +43,11 @@ export class ListComponent implements OnInit {
               `Tarefa ${tarefa.nomeTarefa} removida com sucesso`)
             this.findAll()
           },
-          error: console.error
+          error: err => {
+            this.showMessage('info',
+              'Falha ao remover',
+              `${err.error.message}`)
+          }
         })
       },
 
@@ -71,9 +81,9 @@ export class ListComponent implements OnInit {
     let detail = ''
     if (f.valid) {
       this.service.post(this.tarefa).subscribe({
-        next: value => {
+        next: value => { this.tarefa = value
           servirity = 'info'
-          summary = 'Gravado'
+          summary = 'Sucesso'
           detail = `Tarefa ${this.tarefa.nomeTarefa} salva com sucesso`
           this.showMessage(servirity, summary, detail);
           this.findAll()
@@ -82,7 +92,7 @@ export class ListComponent implements OnInit {
         error: err => {
           servirity = 'error'
           summary = 'Falha ao salvar'
-          detail = `Falha ao salvar a tarefa ${this.tarefa.nomeTarefa} `
+          detail = `${err.error.message}`
           this.showMessage(servirity, summary, detail);
           this.findAll()
         }
@@ -104,9 +114,56 @@ export class ListComponent implements OnInit {
   private findById(id: number) {
     this.service.getId(id).subscribe({
       next: value => this.tarefa = value,
-      error: console.error
+      error: err => {
+        this.showMessage('info',
+          'Inválido',
+          `${err.error.message}`)
+      }
     })
   }
+
+  private moveRow() {
+    let index = this.table?.rows!
+
+
+    // let numberOfRows = body.childNodes.length
+    //
+    // let newRow = document.createElement('tr')
+    // body.appendChild(newRow)
+    //
+    // body.removeChild(body.childNodes[0])
+
+    /*
+    let helperModified = function(e, tr) {
+        let $originals = tr.children();
+        let $helper = tr.clone();
+        $helper.children().each(function(index) {
+          $(this).width($originals.eq(index).width())
+        });
+        return $helper;
+      },
+      updateIndex = function(e, ui) {
+        $('td.index', ui.item.parent()).each(function (i) {
+          $(this).html(i+1);
+        });
+        $('input[type=text]', ui.item.parent()).each(function (i) {
+          $(this).val(i + 1);
+        });
+      };
+
+      $("tbody").sortable({
+        distance: 5,
+        delay: 100,
+        opacity: 0.6,
+        cursor: 'move',
+        update: function() {}
+      });
+  */
+
+
+  }
+
+
 
 }
 
