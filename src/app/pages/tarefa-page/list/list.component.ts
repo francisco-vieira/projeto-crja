@@ -120,6 +120,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.service.postOrdem(previousIndex, currentIndex).subscribe({
       next: value => {
         console.log("OK")
+        this.findAll()
       },
       error: console.error
     })
