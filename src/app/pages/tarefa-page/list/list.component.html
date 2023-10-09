@@ -16,6 +16,7 @@
            *ngIf="tarefas.length">
       <thead>
       <tr>
+
         <th scope="col">ID</th>
         <th scope="col">Tarefa</th>
         <th scope="col">Custo</th>
@@ -24,6 +25,7 @@
       </thead>
       <tbody cdkDropList (cdkDropListDropped)="moverLinha($event)">
       <tr *ngFor="let t of tarefas" [class]=" t.custo> 1000 ? 'table-primary': '' " cdkDrag cdkDragLockAxis="y">
+
         <td cdkDragHandle>{{ t.id }}</td>
         <td>{{ t.nomeTarefa | titlecase }}</td>
         <td>{{ t.custo | currency: 'BRL' }}</td>

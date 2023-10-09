@@ -3,5 +3,5 @@ export interface Tarefa {
   nomeTarefa: string
   custo: number
   dataLimite: Date
-  orderApresentacao: number
+  ordemApresentacao: number
 }

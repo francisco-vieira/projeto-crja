@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Tarefa} from "../model/tarefa";
 import {environment} from "../../environments/environment";
@@ -28,6 +28,11 @@ export class TarefaService {
 
   post(tarefa: Tarefa): Observable<Tarefa> {
     return this.http.post<Tarefa>(this.host, JSON.stringify(tarefa), this.httpOptions);
+  }
+
+  postOrdem(previousIndex:number, currentIndex:number): Observable<any> {
+    const headers = new HttpParams().set("previousIndex", previousIndex).set("currentIndex", currentIndex)
+    return this.http.post(`${this.host}/ordem?${headers.toString()}`, {}, this.httpOptions);
   }
 
   delete(id: number): Observable<any> {

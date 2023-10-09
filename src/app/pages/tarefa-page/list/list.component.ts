@@ -95,7 +95,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.service.getAll().subscribe({
       next: value => {
         this.tarefas = value
-        this.tarefas.sort((a, b) => a.orderApresentacao - b.orderApresentacao);
+        this.tarefas.sort((a, b) => a.ordemApresentacao - b.ordemApresentacao);
       },
       error: console.error
     })
@@ -114,8 +114,16 @@ export class ListComponent implements OnInit, AfterViewInit {
 
   moverLinha(event: CdkDragDrop<any>) {
     moveItemInArray(this.tarefas, event.previousIndex, event.currentIndex)
-  }
 
-  protected readonly ondragend = ondragend;
+    let previous = this.tarefas[event.previousIndex].ordemApresentacao!
+    let currentIndex = this.tarefas[event.currentIndex].ordemApresentacao!
+
+    this.service.postOrdem(previous, currentIndex).subscribe({
+      next: value => {
+        this.findAll()
+      },
+      error: console.error
+    })
+  }
 }
 
