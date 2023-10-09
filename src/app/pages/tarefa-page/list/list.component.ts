@@ -3,15 +3,7 @@ import {TarefaService} from "../../../service/tarefa.service";
 import {Tarefa} from "../../../model/tarefa";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
 import {NgForm} from "@angular/forms";
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDragEnd,
-  CdkDragEnter,
-  CdkDragExit,
-  CdkDragHandle, CdkDragMove,
-  moveItemInArray
-} from "@angular/cdk/drag-drop";
+import {CdkDragDrop,moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-list',
