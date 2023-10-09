@@ -25,8 +25,7 @@
       </thead>
       <tbody cdkDropList (cdkDropListDropped)="moverLinha($event)">
       <tr *ngFor="let t of tarefas" [class]=" t.custo> 1000 ? 'table-primary': '' " cdkDrag cdkDragLockAxis="y">
-
-        <td cdkDragHandle>{{ t.id }}</td>
+        <td cdkDragHandle >{{ t.id }}</td>
         <td>{{ t.nomeTarefa | titlecase }}</td>
         <td>{{ t.custo | currency: 'BRL' }}</td>
         <td>{{ t.dataLimite | date: 'dd/MM/YYYY' }}</td>
@@ -77,7 +76,6 @@
               prefix="R$ "
               mask="separator.2"
               thousandSeparator="."
-              the
               placeholder="0,00"
               [(ngModel)]="tarefa.custo"
               name="custo"

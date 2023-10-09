@@ -1,9 +1,17 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, ViewChild} from '@angular/core';
 import {TarefaService} from "../../../service/tarefa.service";
 import {Tarefa} from "../../../model/tarefa";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
 import {NgForm} from "@angular/forms";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragEnd,
+  CdkDragEnter,
+  CdkDragExit,
+  CdkDragHandle, CdkDragMove,
+  moveItemInArray
+} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-list',
@@ -95,7 +103,6 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.service.getAll().subscribe({
       next: value => {
         this.tarefas = value
-        this.tarefas.sort((a, b) => a.ordemApresentacao - b.ordemApresentacao);
       },
       error: console.error
     })
@@ -112,18 +119,19 @@ export class ListComponent implements OnInit, AfterViewInit {
     })
   }
 
-  moverLinha(event: CdkDragDrop<any>) {
-    moveItemInArray(this.tarefas, event.previousIndex, event.currentIndex)
+  moverLinha(dropped: CdkDragDrop<Tarefa>) {
 
-    let previous = this.tarefas[event.previousIndex].ordemApresentacao!
-    let currentIndex = this.tarefas[event.currentIndex].ordemApresentacao!
+    let previousIndex = this.tarefas[dropped.previousIndex].ordemApresentacao!
+    let currentIndex = this.tarefas[dropped.currentIndex].ordemApresentacao!
+    moveItemInArray(this.tarefas, dropped.previousIndex, dropped.currentIndex)
 
-    this.service.postOrdem(previous, currentIndex).subscribe({
+    this.service.postOrdem(previousIndex, currentIndex).subscribe({
       next: value => {
-        this.findAll()
+        console.log("OK")
       },
       error: console.error
     })
+
   }
 }
 
